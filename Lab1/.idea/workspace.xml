@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6cdc394a-6ab3-4163-bf22-e4f80a489ade" name="Changes" comment="Finish all tasks" />
+    <list default="true" id="6cdc394a-6ab3-4163-bf22-e4f80a489ade" name="Changes" comment="Done" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,6 +50,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -154,7 +155,7 @@
       <option name="presentableId" value="Default" />
       <updated>1678372020263</updated>
       <workItem from="1678372021653" duration="96000" />
-      <workItem from="1678372138748" duration="5777000" />
+      <workItem from="1678372138748" duration="6407000" />
     </task>
     <task id="LOCAL-00001" summary="Finish all tasks">
       <created>1678379323479</created>

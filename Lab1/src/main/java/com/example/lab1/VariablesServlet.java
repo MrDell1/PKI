@@ -1,14 +1,18 @@
-
 package com.example.lab1;
 
-import java.io.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 @WebServlet(name = "variablesServlet", value = "/variable")
 public class VariablesServlet extends HttpServlet {
-    private int i=0;
+    private int i = 0;
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
@@ -32,7 +36,7 @@ public class VariablesServlet extends HttpServlet {
             int y = Integer.parseInt(request.getParameter("y"));
             int sum = x + y;
             out.println("Wynik dodawania " + request.getParameter("x") + "+" + request.getParameter("y") + "=" + sum + "<br>");
-            i+=1;
+            i += 1;
             out.println("Licznik: " + i);
             out.println("<a href=\"/Lab1_war_exploded/\">Powrót do strony głównej</a>");
         } finally {

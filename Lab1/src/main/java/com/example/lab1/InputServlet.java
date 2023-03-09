@@ -1,12 +1,15 @@
 package com.example.lab1;
 
-import java.io.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "inputServlet", value = "/input")
 public class InputServlet extends HttpServlet {
@@ -25,15 +28,14 @@ public class InputServlet extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String dataLancuch = dateFormat.format(date);
-        try{
+        try {
             out.println("<h1>" + dataLancuch + "</h1><br>");
             out.println("<form method=\"get\" action=\"printServlet\">");
             out.println("<input name=\"fname\" type=\"text\"/>");
             out.println("<input type=\"submit\"/>");
             out.println("</form>");
             out.println("<a href=\"/Lab1_war_exploded/\">Powrót do strony głównej</a>");
-        }
-        finally {
+        } finally {
             out.close();
         }
 
