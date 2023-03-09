@@ -4,8 +4,8 @@ import java.io.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello")
-public class HelloServlet extends HttpServlet {
+@WebServlet(name = "printServlet", value = "/print")
+public class PrintServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
@@ -19,8 +19,8 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try{
-            out.println("<h1>Welcome to my first servlet app</h1><br>");
-            out.println("<a href=\"/Lab1_war_exploded/\">Powrót do strony głównej</a>");
+            out.println("<h1>Cześć " + request.getParameter("fname") + "</h1><br>");
+            out.println("<a href=\"inputServlet\">Powrót</a>");
         }
         finally {
             out.close();
