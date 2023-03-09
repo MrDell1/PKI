@@ -45,15 +45,16 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/PKI/Lab1",
+    "last_opened_file_path": "E:/PKI",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -155,7 +156,7 @@
       <option name="presentableId" value="Default" />
       <updated>1678372020263</updated>
       <workItem from="1678372021653" duration="96000" />
-      <workItem from="1678372138748" duration="6407000" />
+      <workItem from="1678372138748" duration="6760000" />
     </task>
     <task id="LOCAL-00001" summary="Finish all tasks">
       <created>1678379323479</created>
