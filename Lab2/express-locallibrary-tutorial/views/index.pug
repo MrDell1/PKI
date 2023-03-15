@@ -24,9 +24,16 @@ block content
       input(type="text" name="msg" value="")
       button(type="submit") Send
     br
-    form(action="/uploadFiles", method="post")
+    form(action="/uploadFiles", method="post" encType="multipart/form-data")
       input(type="file" name="file")
-      button(type="sumbmit") Upload
+      button(type="submit") Upload
+    for x in files 
+      if(x.name != "")
+        p #{x}
+        form(action="/download" method="get")
+          img(src=x)
+          input(hidden value=x name="name") 
+          button(type="submit") Download
   else 
     form(action="/signIn", method="get") 
       input(hidden value="signIn" name="signIn")

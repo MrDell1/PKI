@@ -1,9 +1,25 @@
 var express = require("express");
+const fs = require('fs')
 const { use } = require("./dane");
 var router = express.Router();
 var i = 0;
+const dir = './uploads/'
+const filesArray = [];
+fs.readdir(dir, (err, files) => {
+  if (err) {
+    throw err
+  }
+  files.forEach(file => {
+    filesArray.push(file);
+    console.log(file)
+  })
+})
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
+
+  console.log(filesArray);
+
   i++;
   req.app.locals.ii++;
   ii++;
@@ -20,6 +36,7 @@ router.get("/", function (req, res, next) {
     counter: req.session.views,
     username: req.session.username,
     chat: global.chat,
+    files: filesArray,
   });
 });
 
@@ -56,19 +73,15 @@ router.post("/chat", function (req, res, next) {
 });
 
 router.post("/uploadFiles", function (req, res, next) {
+  console.log(req.files);
   if (!req.files) {
     res.send({
       status: false,
       message: "No file uploaded",
     });
   } else {
-    //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
     let file = req.files.file;
-
-    //Use the mv() method to place the file in the upload directory (i.e. "uploads")
     file.mv("./uploads/" + file.name);
-
-    //send response
     res.send({
       status: true,
       message: "File is uploaded",
@@ -80,6 +93,11 @@ router.post("/uploadFiles", function (req, res, next) {
     });
   }
 });
+
+router.get("/download", function(req, res, next) {
+  const file = `./uploads/${req.query.name}`;
+  res.download(file);
+})
 
 router.get("/:name/:age", function (req, res, next) {
   res.send(req.params);
