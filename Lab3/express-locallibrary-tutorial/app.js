@@ -6,9 +6,9 @@ var logger = require("morgan");
 var session = require("express-session");
 var fileUpload = require("express-fileupload");
 var bodyParser = require('body-parser')
+var cors = require("cors");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 var scoreRoute = require("./routes/score");
 
 var app = express();
@@ -25,6 +25,7 @@ global.chat = [
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
