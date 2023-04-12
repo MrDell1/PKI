@@ -16,8 +16,11 @@
       ws.onerror = ws.onopen = ws.onclose = null;
       ws.close();
     }
-
-    ws = new WebSocket(`ws:/${location.host}`);
+    const roomId = document.getElementById("roominput").value;
+    if(!roomId){
+      showMessage("Choose your room");
+    }
+    ws = new WebSocket(`ws:/${location.host}/room?roomId=${roomId}`);
     ws.onerror = function () {
       showMessage("WebSocket error");
     };
