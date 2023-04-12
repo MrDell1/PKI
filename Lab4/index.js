@@ -28,72 +28,67 @@ const sessionParser = session({
 app.use(express.static("public"));
 app.use(sessionParser);
 
-app.get("/room", function (request, response) {
-  const roomId = request.params.roomId;
-});
+app.get("/room/:roomId", function (request, response) {
+  const roomId = request.params["roomId"];
 
-//
-// Create an HTTP server.
-//
-const server = http.createServer(app);
+  const wss = new WebSocketServer({ port: 8081 });
 
-//
-// Create a WebSocket server completely detached from the HTTP server.
-//
-const wss = new WebSocketServer({ port: 8081 });
+  server.on("upgrade", function (request, socket, head) {
+    socket.on("error", onSocketError);
 
-server.on("upgrade", function (request, socket, head) {
-  socket.on("error", onSocketError);
+    console.log("Parsing session from request...");
 
-  console.log("Parsing session from request...");
+    sessionParser(request, {}, () => {
+      console.log("Session is parsed!");
 
-  sessionParser(request, {}, () => {
-    console.log("Session is parsed!");
+      socket.removeListener("error", onSocketError);
 
-    socket.removeListener("error", onSocketError);
+      wss.handleUpgrade(request, socket, head, function (ws) {
+        wss.emit("connection", ws, request);
+      });
+    });
+  });
 
-    wss.handleUpgrade(request, socket, head, function (ws) {
-      wss.emit("connection", ws, request);
+  function sendToSession(id, msg) {
+    wss.clients.forEach(function each(client) {
+      if (client === map.get(id) && client.readyState === 1) {
+        client.send(msg);
+      }
+    });
+  }
+
+  function sendToAllConnectedSessionsInRoom(msg) {
+    wss.clients.forEach(function each(client) {
+      if (client === map.get(rooms.get(roomId)) && client.readyState === 1) {
+        client.send(msg);
+      }
+    });
+  }
+
+  wss.on("connection", function (ws, request) {
+    const id = uuid.v4();
+    console.log(`Updating session for user ${id}`);
+    map.set(id, ws);
+    rooms.set(roomId, id);
+    ws.on("error", console.error);
+
+    ws.on("message", function (message) {
+      sendToAllConnectedSessionsInRoom(message);
+      console.log(`Received message ${message}`);
+    });
+
+    ws.on("close", function () {
+      map.delete(id);
+      console.log(`Client disconnected`);
     });
   });
 });
 
-function sendToSession(id, msg) {
-  wss.clients.forEach(function each(client) {
-    if (client === map.get(id) && client.readyState === 1) {
-      client.send(msg);
-    }
-  });
-}
+const server = http.createServer(app);
 
-function sendToAllConnectedSessions(msg) {
-  wss.clients.forEach(function each(client) {
-    if (client.readyState === 1) {
-      client.send(msg);
-    }
-  });
-}
-
-wss.on("connection", function (ws, request) {
-  const id = uuid.v4();
-  console.log(`Updating session for user ${id}`);
-  map.set(id, ws);
-  ws.on("error", console.error);
-
-  ws.on("message", function (message) {
-    sendToAllConnectedSessions(message);
-    console.log(`Received message ${message}`);
-  });
-
-  ws.on("close", function () {
-    map.delete(id);
-    console.log(`Client disconnected`);
-  });
-});
-
-//
-// Start the server.
-//
 server.listen(8080, function () {
   console.log("Listening on http://localhost:8080");
 });
+//
+// Create a WebSocket server completely detached from the HTTP server.
+//
