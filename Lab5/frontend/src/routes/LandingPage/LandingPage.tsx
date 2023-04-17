@@ -1,15 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useSessionStatus } from "@services/SessionService";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import lp from "./assets/lp.jpg";
 
 const LandingPage = (): ReactElement => {
-  const status = useSessionStatus();
-  if (status === "auth") {
-    return <Navigate replace to={paths.public} />;
-  }
   return (
     <Flex
       bgImage={lp}

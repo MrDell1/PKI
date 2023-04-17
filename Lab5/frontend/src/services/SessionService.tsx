@@ -46,7 +46,6 @@ export type SessionServiceValue =
 
 type SessionServiceState =
   | {
-      email: string;
       status: "auth";
       authorization: string;
       role: string;
@@ -98,13 +97,14 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
     getSessionQueryKey(),
     (): Promise<SessionServiceState> => {
       const authorization = localStorage.getItem("authorization");
+      const role = localStorage.getItem("role");
+
       return Promise.resolve(
-        authorization
+        authorization && role
           ? {
               status: "auth",
-              email: authorization,
               authorization: authorization,
-              role: authorization,
+              role: role,
             }
           : { status: "anon" }
       );
@@ -133,16 +133,17 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
                   body: JSON.stringify(value),
                 }
               );
-              const result = response.headers.get("Authorization");
-              if (!result) {
-                return Promise.reject();
+
+              const result = await response.json();
+              if (!response.ok || !result) {
+                throw new Error(result.error);
               }
-              localStorage.setItem("authorization", result);
+              localStorage.setItem("authorization", result.token);
+              localStorage.setItem("role", result.user.role);
               client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
                 status: "auth",
-                email: value.email,
-                authorization: result,
-                role: result,
+                authorization: result.token,
+                role: result.user.role,
               });
               return Promise.resolve();
             },
@@ -174,6 +175,7 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
           value: {
             signOut: () => {
               localStorage.removeItem("authorization");
+              localStorage.removeItem("role");
               client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
                 status: "anon",
               });

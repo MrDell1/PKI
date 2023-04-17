@@ -22,8 +22,7 @@ const SignInPage = (): ReactElement => {
     >
       <Flex flexDir="column" textColor="light.100">
         <Link to={paths.root}>
-          <Heading>Fashion</Heading>
-          <Heading>Ai</Heading>
+          <Heading>JWT Token</Heading>
         </Link>
       </Flex>
 
