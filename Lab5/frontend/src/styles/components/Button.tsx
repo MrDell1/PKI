@@ -57,6 +57,11 @@ export const Button: ComponentStyleConfig = {
       py: "4",
       fontSize: "2xl",
     },
+    sm: {
+      px: "4",
+      py: "2",
+      fontSize: "2xl",
+    },
   },
   variants: {
     primary: {
