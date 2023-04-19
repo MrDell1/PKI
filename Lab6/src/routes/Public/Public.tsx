@@ -5,7 +5,7 @@ import { ReactElement } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function uplodData(): Promise<Response> {
-  const response = fetch("http://localhost:3000/resources/public", {
+  const response = fetch("https://pkilab6.azurewebsites.net/resources/public", {
     method: "GET",
   });
   // const result = await response.json();
