@@ -22,6 +22,9 @@ export type RegistrationArgs = {
 
 export type AuthService = {
   role: string;
+  username: string;
+  email: string;
+  authorization: string;
   signOut: () => Promise<void>;
   fetcher: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 };
@@ -49,6 +52,8 @@ type SessionServiceState =
       status: "auth";
       authorization: string;
       role: string;
+      username: string;
+      email: string;
     }
   | {
       status: "anon";
@@ -98,13 +103,16 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
     (): Promise<SessionServiceState> => {
       const authorization = localStorage.getItem("authorization");
       const role = localStorage.getItem("role");
-
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email")
       return Promise.resolve(
-        authorization && role
+        authorization && role && username && email
           ? {
               status: "auth",
               authorization: authorization,
               role: role,
+              username: username,
+              email: email,
             }
           : { status: "anon" }
       );
@@ -140,10 +148,15 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
               }
               localStorage.setItem("authorization", result.token);
               localStorage.setItem("role", result.user.role);
+              localStorage.setItem("username", result.user.username);
+              localStorage.setItem("email", result.user.email);
+
               client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
                 status: "auth",
                 authorization: result.token,
                 role: result.user.role,
+                username: result.user.username,
+                email: result.user.email,
               });
               return Promise.resolve();
             },
@@ -176,6 +189,9 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
             signOut: () => {
               localStorage.removeItem("authorization");
               localStorage.removeItem("role");
+              localStorage.removeItem("username");
+              localStorage.removeItem("email");
+
               client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
                 status: "anon",
               });
@@ -207,6 +223,9 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
               return response;
             },
             role: data.role,
+            username: data.username,
+            email: data.email,
+            authorization: data.authorization,
           },
         };
       default:

@@ -4,14 +4,18 @@ import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
 import { Admin } from "./Admin/Admin";
 import { User } from "./User/User";
+import { Flex, Text } from "@chakra-ui/react";
 
 export const Resource = (): ReactElement => {
   const authService = useAuthService();
-  if (authService.role === "user") {
-    return <User />;
-  }
-  if (authService.role === "admin") {
-    return <Admin />;
-  }
-  return <Navigate to={paths.public} />;
+  return (
+    <Flex flexDir="column">
+      <Text>{authService.email}</Text>
+      <Text>{authService.username}</Text>
+      <Text>{authService.role}</Text>
+      <Text>{authService.authorization}</Text>
+      {authService.role === "user" ? <User /> : authService.role === "admin" ? <Admin /> : <Navigate to={paths.public} />}
+    </Flex>
+  )
+
 };
