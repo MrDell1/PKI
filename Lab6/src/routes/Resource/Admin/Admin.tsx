@@ -44,7 +44,7 @@ export const Admin = (): ReactElement => {
             <Text>Role</Text>
             <Text>Activate/Deactivate</Text>
           </Flex>
-          {query?.data.users.map((value, key) => {
+          {query?.data.users.map((value: {username:string, idusers: string, email: string, role: string, isActive: number}, key: number) => {
             return (
               <Flex
                 alignItems="center"
