@@ -13,7 +13,7 @@ export const Deactivate = ({ id }: Props): ReactElement => {
 
   const { mutate } = useMutation((value: string) =>
     authService
-      .fetcher("http://localhost:3000/resources/admin/deactive", {
+      .fetcher("https://pkilab6.azurewebsites.net/resources/admin/deactive", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

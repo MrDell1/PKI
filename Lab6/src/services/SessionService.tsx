@@ -132,7 +132,7 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
           value: {
             signIn: async (value) => {
               const response = await fetch(
-                "http://localhost:3000/auth/signin",
+                "https://pkilab6.azurewebsites.net/auth/signin",
                 {
                   method: "POST",
                   headers: {
@@ -163,7 +163,7 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
 
             signUp: async (value) => {
               const response = await fetch(
-                "http://localhost:3000/auth/signup",
+                "https://pkilab6.azurewebsites.net/auth/signup",
                 {
                   method: "POST",
                   headers: {

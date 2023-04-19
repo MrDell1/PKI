@@ -13,7 +13,7 @@ export const Activate = ({ id }: Props): ReactElement => {
 
   const { mutate } = useMutation((value: string) =>
     authService
-      .fetcher("http://localhost:3000/resources/admin/active", {
+      .fetcher("https://pkilab6.azurewebsites.net/resources/admin/active", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

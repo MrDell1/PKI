@@ -11,7 +11,7 @@ export const Admin = (): ReactElement => {
   const authService = useAuthService();
   const query = useQuery(["adminData"], () =>
     authService
-      .fetcher("http://localhost:3000/resources/admin", { method: "GET" })
+      .fetcher("https://pkilab6.azurewebsites.net/resources/admin", { method: "GET" })
       .then((response) => response.json())
   );
 

@@ -9,7 +9,7 @@ export const User = (): ReactElement => {
   const authService = useAuthService();
   const query = useQuery(["userData"], () =>
     authService
-      .fetcher("http://localhost:3000/resources/user", { method: "GET" })
+      .fetcher("https://pkilab6.azurewebsites.net/resources/user", { method: "GET" })
       .then((response) => response.json())
   );
   if (
