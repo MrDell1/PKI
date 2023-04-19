@@ -7,6 +7,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 function uplodData(): Promise<Response> {
   const response = fetch("https://pkilab6.azurewebsites.net/resources/public", {
     method: "GET",
+    headers: {
+      "Access-Control-Allow-Origin":"https://pki-esj4-mrdell1.vercel.app",
+    }
   });
   // const result = await response.json();
   return response;
