@@ -11,14 +11,16 @@ var cors = require("cors");
 var authRouter = require("./routes/auth");
 var resourcesRoute = require("./routes/resources");
 
-var app = express({
-  origin: ["https://pki-esj4.vercel.app", "https://localhost:5173"],
-});
+var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://pki-esj4.vercel.app", "https://localhost:5173"],
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
