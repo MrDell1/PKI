@@ -11,7 +11,9 @@ var cors = require("cors");
 var authRouter = require("./routes/auth");
 var resourcesRoute = require("./routes/resources");
 
-var app = express();
+var app = express({
+  origin: ["https://pki-esj4.vercel.app", "https://localhost:5173"],
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -25,8 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(session({ secret: "secret", resave: true,
-saveUninitialized: true }));
+app.use(session({ secret: "secret", resave: true, saveUninitialized: true }));
 app.use(fileUpload());
 
 app.use("/auth", authRouter);
