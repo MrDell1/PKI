@@ -13,12 +13,12 @@ const googleOauthHandler = async (req, res, next) => {
 
     // Use the code to get the id and access tokens
     const { id_token, access_token } = await getGoogleOauthToken(code);
-
+    console.log(id_token, access_token);
     // Use the token to get the User
-    const { name, verified_email, email, picture } = await getGoogleUser({
+    const { name, verified_email, email, picture } = await getGoogleUser(
       id_token,
-      access_token,
-    });
+      access_token
+    );
 
     // Check if user is verified
     if (!verified_email) {

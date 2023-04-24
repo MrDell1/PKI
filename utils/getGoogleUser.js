@@ -14,7 +14,7 @@ async function getGoogleUser(id_token, access_token) {
     return result;
   } else {
     console.log(result.error);
-    throw new Error(result.error);
+    throw new Error(result.error.message);
   }
 }
 

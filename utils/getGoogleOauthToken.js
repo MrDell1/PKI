@@ -23,7 +23,6 @@ const getGoogleOauthToken = async (code) => {
     body: new URLSearchParams(options),
   });
   const result = await response.json();
-  console.log(result, response);
   if (response.status === 200) {
     return result;
   } else {
