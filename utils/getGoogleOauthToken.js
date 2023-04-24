@@ -6,7 +6,6 @@ const REDIRECT_URL = OAuth2Data.web.redirect_uris;
 
 const getGoogleOauthToken = async (code) => {
   const rootURl = "https://oauth2.googleapis.com/token";
-  console.log(code);
   const options = {
     code,
     client_id: CLIENT_ID,

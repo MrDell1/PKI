@@ -51,6 +51,7 @@ const googleOauthHandler = async (req, res, next) => {
                   error: err,
                 });
               }
+
               connection.query(
                 ` SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
                   email
@@ -71,12 +72,13 @@ const googleOauthHandler = async (req, res, next) => {
                     token,
                     user: resultSignUp[0],
                   });
-                  res.redirect(pathUrl);
+                  return res.redirect(pathUrl);
                 }
               );
             }
           );
         }
+        console.log(result[0]);
         if (result[0].provider !== "google") {
           return res.status(400).send({ error: "It's not google account" });
         }
@@ -88,7 +90,7 @@ const googleOauthHandler = async (req, res, next) => {
           token,
           user: result[0],
         });
-        res.redirect(pathUrl);
+        return res.redirect(pathUrl);
       }
     );
   } catch (error) {
