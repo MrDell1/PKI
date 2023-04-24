@@ -4,8 +4,11 @@ var router = express.Router();
 const { check, body } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const googleOauthHandler =
+  require("../controller/googleOauthHandler.js").googleOauthHandler;
 let connection = require("../database").databaseConnection;
+
+router.get("/oauth/google", googleOauthHandler);
 
 router.post("/signin", function (req, res, next) {
   check(req.body.email, "Wrong email").isEmail();
@@ -76,9 +79,9 @@ router.post("/signup", function (req, res, next) {
 
       bcrypt.hash(req.body.password, 10, (err, hash) => {
         connection.query(
-          `INSERT INTO users (username, email, password) VALUES (${connection.escape(
+          `INSERT INTO users (username, email, password, provider) VALUES (${connection.escape(
             req.body.username
-          )}, ${connection.escape(req.body.email)}, '${hash}')`,
+          )}, ${connection.escape(req.body.email)}, '${hash}', 'local')`,
           (err, result) => {
             if (err) {
               console.log(err);
