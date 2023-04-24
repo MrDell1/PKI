@@ -7,8 +7,6 @@ let connection = require("../database").databaseConnection;
 const googleOauthHandler = async (req, res, next) => {
   // Get the code from the query
   const code = req.query.code;
-  const pathUrl = req.query.state || "/";
-  console.log(pathUrl);
 
   try {
     if (!code) {
@@ -67,12 +65,11 @@ const googleOauthHandler = async (req, res, next) => {
                       expiresIn: "1h",
                     }
                   );
-                  res.status(200).send({
+                  return res.status(200).send({
                     msg: "Logged in!",
                     token,
                     user: resultSignUp[0],
                   });
-                  return res.redirect(pathUrl);
                 }
               );
             }
@@ -85,12 +82,11 @@ const googleOauthHandler = async (req, res, next) => {
         const token = jwt.sign({ id: result[0].idusers }, "rsa", {
           expiresIn: "1h",
         });
-        res.status(200).send({
+        return res.status(200).send({
           msg: "Logged in!",
           token,
           user: result[0],
         });
-        return res.redirect(pathUrl);
       }
     );
   } catch (error) {
