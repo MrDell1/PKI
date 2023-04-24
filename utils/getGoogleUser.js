@@ -8,11 +8,13 @@ async function getGoogleUser(id_token, access_token) {
       },
     }
   );
-  if (response.ok) {
-    return data;
+  const result = await response.json();
+  console.log(result, response);
+  if (response.status === 200) {
+    return result;
   } else {
-    console.log(err);
-    throw Error(err);
+    console.log(result.error);
+    throw new Error(result.error);
   }
 }
 
