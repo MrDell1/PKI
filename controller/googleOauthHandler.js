@@ -2,10 +2,14 @@ const getGoogleOauthToken =
   require("../utils/getGoogleOauthToken.js").getGoogleOauthToken;
 const getGoogleUser = require("../utils/getGoogleUser.js").getGoogleUser;
 const jwt = require("jsonwebtoken");
+let connection = require("../database").databaseConnection;
 
 const googleOauthHandler = async (req, res, next) => {
   // Get the code from the query
   const code = req.query.code;
+  const pathUrl = req.query.state || "/";
+  console.log(pathUrl);
+
   try {
     if (!code) {
       return next(new Error("Authorization code not provided!", 401));
@@ -13,7 +17,7 @@ const googleOauthHandler = async (req, res, next) => {
 
     // Use the code to get the id and access tokens
     const { id_token, access_token } = await getGoogleOauthToken(code);
-    console.log(id_token, access_token);
+
     // Use the token to get the User
     const { name, verified_email, email, picture } = await getGoogleUser(
       id_token,
@@ -62,11 +66,12 @@ const googleOauthHandler = async (req, res, next) => {
                       expiresIn: "1h",
                     }
                   );
-                  return res.status(200).send({
+                  res.status(200).send({
                     msg: "Logged in!",
                     token,
                     user: resultSignUp[0],
                   });
+                  res.redirect(pathUrl);
                 }
               );
             }
@@ -78,11 +83,12 @@ const googleOauthHandler = async (req, res, next) => {
         const token = jwt.sign({ id: result[0].idusers }, "rsa", {
           expiresIn: "1h",
         });
-        return res.status(200).send({
+        res.status(200).send({
           msg: "Logged in!",
           token,
           user: result[0],
         });
+        res.redirect(pathUrl);
       }
     );
   } catch (error) {
