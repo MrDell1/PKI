@@ -5,10 +5,20 @@ import { paths } from "@utils/paths";
 import { ReactElement } from "react";
 import { Navigate } from "react-router";
 
-export const Google = (): ReactElement => {
+const Google = (): ReactElement => {
   const anonService = useAnonService();
-  const query = useQuery(["oauthGoogle"], anonService.oauthGoogle);
-
+  const query = useQuery(
+    ["oauthGoogle"],
+    anonService.oauthGoogle(window.location.search)
+  );
+  // const [queryParameters] = useSearchParams();
+  // console.log(
+  //   queryParameters.get("code"),
+  //   queryParameters.get("scope"),
+  //   queryParameters.get("authuser")
+  // );
+  const queryParameters = new URLSearchParams(window.location);
+  console.log(window.location.search);
   if (
     query.status === "error" &&
     query.error instanceof Error &&
@@ -21,3 +31,4 @@ export const Google = (): ReactElement => {
   }
   return <Spinner size="xl" />;
 };
+export default Google;

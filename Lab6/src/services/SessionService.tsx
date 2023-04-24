@@ -31,7 +31,7 @@ export type AuthService = {
 
 export type AnonService = {
   signIn: (value: AuthValue) => Promise<void>;
-  oauthGoogle: () => Promise<void>;
+  oauthGoogle: (value: string) => Promise<void>;
   signUp: (values: RegistrationArgs) => Promise<void>;
 };
 
@@ -161,9 +161,9 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
               });
               return Promise.resolve();
             },
-            oauthGoogle: async () => {
+            oauthGoogle: async (value) => {
               const response = await fetch(
-                "https://pkilab6.azurewebsites.net/auth/oauth/google",
+                `https://pkilab6.azurewebsites.net/auth/oauth/google${value}`,
                 {
                   method: "GET",
                 }

@@ -4,5 +4,5 @@ export const paths = {
   signIn: "/signIn",
   signUp: "/signUp",
   resources: "/resources",
-  googleAuth: "/oauth/google",
+  googleAuth: "/oauthgoogle",
 };
