@@ -10,14 +10,6 @@ const Google = (): ReactElement => {
   const query = useQuery(["oauthGoogle"], () =>
     anonService.oauthGoogle(window.location.search)
   );
-  // const [queryParameters] = useSearchParams();
-  // console.log(
-  //   queryParameters.get("code"),
-  //   queryParameters.get("scope"),
-  //   queryParameters.get("authuser")
-  // );
-  const queryParameters = new URLSearchParams(window.location);
-  console.log(window.location.search);
   if (
     query.status === "error" &&
     query.error instanceof Error &&
