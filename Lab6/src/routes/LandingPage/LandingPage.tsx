@@ -1,10 +1,13 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { getGoogleUrl } from "@utils/getGoogleUrl";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import lp from "./assets/lp.jpg";
 
 const LandingPage = (): ReactElement => {
+  const location = useLocation();
+  const from = ((location.state as any)?.from?.pathname as string) || "/";
   return (
     <Flex
       bgImage={lp}
@@ -51,6 +54,18 @@ const LandingPage = (): ReactElement => {
             <Button>Sign up</Button>
           </Link>
         </Flex>
+        <Flex alignItems="center" w="full">
+          <Divider orientation="horizontal" />
+          <Text color="white" fontSize="sm" px="3">
+            OR
+          </Text>
+          <Divider orientation="horizontal" />
+        </Flex>
+        <Link to={getGoogleUrl(from)}>
+          <Button bg="red.600" size="md">
+            Google
+          </Button>
+        </Link>
       </Flex>
     </Flex>
   );
