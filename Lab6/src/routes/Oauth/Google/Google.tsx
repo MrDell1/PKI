@@ -7,8 +7,7 @@ import { Navigate } from "react-router";
 
 const Google = (): ReactElement => {
   const anonService = useAnonService();
-  const query = useQuery(
-    ["oauthGoogle"],
+  const query = useQuery(["oauthGoogle"], () =>
     anonService.oauthGoogle(window.location.search)
   );
   // const [queryParameters] = useSearchParams();
