@@ -24,7 +24,7 @@ const getGoogleOauthToken = async (code) => {
   });
   const result = await response.json();
   console.log(result, response);
-  if (response.ok) {
+  if (response.status === 200) {
     return result;
   } else {
     console.log("Failed to fetch Google Oauth Tokens");
