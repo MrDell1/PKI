@@ -31,6 +31,7 @@ export type AuthService = {
 
 export type AnonService = {
   signIn: (value: AuthValue) => Promise<void>;
+  oauthGoogle: () => Promise<void>;
   signUp: (values: RegistrationArgs) => Promise<void>;
 };
 
@@ -104,7 +105,7 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
       const authorization = localStorage.getItem("authorization");
       const role = localStorage.getItem("role");
       const username = localStorage.getItem("username");
-      const email = localStorage.getItem("email")
+      const email = localStorage.getItem("email");
       return Promise.resolve(
         authorization && role && username && email
           ? {
@@ -143,6 +144,33 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
               );
 
               const result = await response.json();
+              if (!response.ok || !result) {
+                throw new Error(result.error);
+              }
+              localStorage.setItem("authorization", result.token);
+              localStorage.setItem("role", result.user.role);
+              localStorage.setItem("username", result.user.username);
+              localStorage.setItem("email", result.user.email);
+
+              client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
+                status: "auth",
+                authorization: result.token,
+                role: result.user.role,
+                username: result.user.username,
+                email: result.user.email,
+              });
+              return Promise.resolve();
+            },
+            oauthGoogle: async () => {
+              const response = await fetch(
+                "https://pkilab6.azurewebsites.net/auth/oauth/google",
+                {
+                  method: "GET",
+                }
+              );
+
+              const result = await response.json();
+              console.log(result);
               if (!response.ok || !result) {
                 throw new Error(result.error);
               }

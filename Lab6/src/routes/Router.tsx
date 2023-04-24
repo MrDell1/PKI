@@ -1,6 +1,7 @@
 import { paths } from "@utils/paths";
 import { lazy, ReactElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Google } from "./Oauth/Google/Google";
 import { Resource } from "./Resource/Resource";
 
 const ContentWrapper = lazy(() => import("./ContentWrapper/ContentWrapper"));
@@ -46,6 +47,7 @@ export const Router = (): ReactElement => {
           }
           path={paths.public}
         />
+        <Route element={<Google />} path={paths.googleAuth} />
 
         <Route
           element={
