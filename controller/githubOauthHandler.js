@@ -15,18 +15,13 @@ const githubOauthHandler = async (req, res, next) => {
 
     // Use the code to get the id and access tokens
     const { scope, access_token } = await getGithubOauthToke(code);
-    const scopes = JSON.parse(result)["scope"].split(",");
-    const has_user_email_scope = scopes === "user:email";
+
+    const has_user_email_scope = scope === "user:email";
     // Use the token to get the User
-    const { name, verified_email, email } = await getGithubUser(
+    const { login, email } = await getGithubUser(
       has_user_email_scope,
       access_token
     );
-
-    // Check if user is verified
-    // if (!verified_email) {
-    //   return next(new AppError("Google account not verified", 403));
-    // }
 
     // Update user if user already exist or create new user
     connection.query(
@@ -41,7 +36,7 @@ const githubOauthHandler = async (req, res, next) => {
         if (!result.length) {
           connection.query(
             `INSERT INTO users (username, email, provider) VALUES (${connection.escape(
-              name
+              login
             )}, ${connection.escape(email)}, 'github')`,
             (err) => {
               if (err) {
