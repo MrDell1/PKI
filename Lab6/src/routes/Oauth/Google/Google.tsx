@@ -8,13 +8,16 @@ import { Navigate } from "react-router";
 const Google = (): ReactElement => {
   const anonService = useAnonService();
   const { mutate } = useMutation(anonService.oauthGoogle);
-
+  // const status = useSessionStatus();
+  // if (status === "auth") {
+  //   return <Navigate replace to={paths.resources} />;
+  // }
   mutate(window.location.search, {
     onError: () => {
-      return <Navigate to={paths.signIn} />;
+      return <Navigate replace to={paths.signIn} />;
     },
     onSuccess: () => {
-      return <Navigate to={paths.resources} />;
+      return <Navigate replace to={paths.resources} />;
     },
   });
 
