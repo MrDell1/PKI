@@ -50,8 +50,9 @@ const githubOauthHandler = async (req, res, next) => {
               email
             )}`,
             (errSignUp, resultSignUp) => {
+              console.log("Select executed");
               if (errSignUp) {
-                return res.status(400).send({ error: errSignUp });
+                throw new Error(errSignUp);
               }
               console.log("resultSignUp", resultSignUp);
               const token = jwt.sign({ id: resultSignUp[0].idusers }, "rsa", {
@@ -64,19 +65,20 @@ const githubOauthHandler = async (req, res, next) => {
               });
             }
           );
+        } else {
+          console.log(result[0]);
+          if (result[0].provider !== "github") {
+            return res.status(400).send({ error: "It's not github account" });
+          }
+          const token = jwt.sign({ id: result[0].idusers }, "rsa", {
+            expiresIn: "1h",
+          });
+          return res.status(200).send({
+            msg: "Logged in!",
+            token,
+            user: result[0],
+          });
         }
-        console.log(result[0]);
-        if (result[0].provider !== "github") {
-          return res.status(400).send({ error: "It's not github account" });
-        }
-        const token = jwt.sign({ id: result[0].idusers }, "rsa", {
-          expiresIn: "1h",
-        });
-        return res.status(200).send({
-          msg: "Logged in!",
-          token,
-          user: result[0],
-        });
       }
     );
   } catch (error) {
