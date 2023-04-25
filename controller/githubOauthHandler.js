@@ -16,12 +16,9 @@ const githubOauthHandler = async (req, res, next) => {
     // Use the code to get the id and access tokens
     const { scope, access_token } = await getGithubOauthToke(code);
 
-    const has_user_email_scope = scope === "user:email";
+    //const has_user_email_scope = scope === "user:email";
     // Use the token to get the User
-    const { login, email } = await getGithubUser(
-      has_user_email_scope,
-      access_token
-    );
+    const { login, email } = await getGithubUser(access_token);
 
     // Update user if user already exist or create new user
     connection.query(
