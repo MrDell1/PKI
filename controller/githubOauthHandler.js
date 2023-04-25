@@ -44,17 +44,16 @@ const githubOauthHandler = async (req, res, next) => {
               }
             }
           );
-          console.log("Insert success");
+
           connection.query(
             `SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
               email
             )}`,
             (errSignUp, resultSignUp) => {
-              console.log("Select executed");
               if (errSignUp) {
                 throw new Error(errSignUp);
               }
-              console.log("resultSignUp", resultSignUp);
+
               const token = jwt.sign({ id: resultSignUp[0].idusers }, "rsa", {
                 expiresIn: "1h",
               });
@@ -66,7 +65,6 @@ const githubOauthHandler = async (req, res, next) => {
             }
           );
         } else {
-          console.log(result[0]);
           if (result[0].provider !== "github") {
             return res.status(400).send({ error: "It's not github account" });
           }
@@ -82,7 +80,6 @@ const githubOauthHandler = async (req, res, next) => {
       }
     );
   } catch (error) {
-    console.log("Failed to authorize Google User", error);
     console.log(error);
     return res.status(400).send({ error: error });
   }

@@ -45,52 +45,44 @@ const googleOauthHandler = async (req, res, next) => {
             (err) => {
               if (err) {
                 console.log(err);
-                return res.status(400).send({
-                  error: err,
-                });
+                throw new Error(err);
               }
-
-              connection.query(
-                ` SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
-                  email
-                )}`,
-                (err, resultSignUp) => {
-                  if (err) {
-                    return res.status(400).send({ error: err });
-                  }
-                  const token = jwt.sign(
-                    { id: resultSignUp[0].idusers },
-                    "rsa",
-                    {
-                      expiresIn: "1h",
-                    }
-                  );
-                  return res.status(200).send({
-                    msg: "Logged in!",
-                    token,
-                    user: resultSignUp[0],
-                  });
-                }
-              );
             }
           );
+          connection.query(
+            ` SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
+              email
+            )}`,
+            (errSignUp, resultSignUp) => {
+              if (errSignUp) {
+                throw new Error(errSignUp);
+              }
+              const token = jwt.sign({ id: resultSignUp[0].idusers }, "rsa", {
+                expiresIn: "1h",
+              });
+              return res.status(200).send({
+                msg: "Logged in!",
+                token,
+                user: resultSignUp[0],
+              });
+            }
+          );
+        } else {
+          if (result[0].provider !== "google") {
+            return res.status(400).send({ error: "It's not google account" });
+          }
+          const token = jwt.sign({ id: result[0].idusers }, "rsa", {
+            expiresIn: "1h",
+          });
+          return res.status(200).send({
+            msg: "Logged in!",
+            token,
+            user: result[0],
+          });
         }
-        console.log(result[0]);
-        if (result[0].provider !== "google") {
-          return res.status(400).send({ error: "It's not google account" });
-        }
-        const token = jwt.sign({ id: result[0].idusers }, "rsa", {
-          expiresIn: "1h",
-        });
-        return res.status(200).send({
-          msg: "Logged in!",
-          token,
-          user: result[0],
-        });
       }
     );
   } catch (error) {
-    console.log("Failed to authorize Google User", error);
     console.log(error);
     return res.status(400).send({ error: error });
   }
