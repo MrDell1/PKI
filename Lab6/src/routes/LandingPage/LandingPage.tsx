@@ -1,4 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { getGithubUrl } from "@utils/getGithubUrl";
 import { getGoogleUrl } from "@utils/getGoogleUrl";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
@@ -64,6 +65,11 @@ const LandingPage = (): ReactElement => {
         <Link to={getGoogleUrl(from)}>
           <Button bg="red.600" size="md">
             Google
+          </Button>
+        </Link>
+        <Link to={getGithubUrl()}>
+          <Button bg="red.600" size="md">
+            GitHub
           </Button>
         </Link>
       </Flex>

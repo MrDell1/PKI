@@ -10,6 +10,7 @@ const LandingPage = lazy(() => import("./LandingPage/LandingPage"));
 const Public = lazy(() => import("./Public/Public"));
 const Protected = lazy(() => import("./Protected/Protected"));
 const Google = lazy(() => import("./Google/Google"));
+const GitHub = lazy(() => import("./GitHub/GitHub"));
 
 export const Router = (): ReactElement => {
   return (
@@ -55,6 +56,15 @@ export const Router = (): ReactElement => {
             </Suspense>
           }
           path={paths.googleAuth}
+        />
+
+        <Route
+          element={
+            <Suspense fallback={null}>
+              <GitHub />
+            </Suspense>
+          }
+          path={paths.githubAuth}
         />
 
         <Route

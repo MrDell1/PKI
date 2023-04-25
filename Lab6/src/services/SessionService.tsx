@@ -32,6 +32,7 @@ export type AuthService = {
 export type AnonService = {
   signIn: (value: AuthValue) => Promise<void>;
   oauthGoogle: (value: string) => Promise<void>;
+  oauthGithub: (value: string) => Promise<void>;
   signUp: (values: RegistrationArgs) => Promise<void>;
 };
 
@@ -164,6 +165,33 @@ export const SessionServiceProvider = ({ children }: Props): ReactElement => {
             oauthGoogle: async (value) => {
               const response = await fetch(
                 `https://pkilab6.azurewebsites.net/auth/oauth/google${value}`,
+                {
+                  method: "GET",
+                }
+              );
+
+              const result = await response.json();
+              console.log(result);
+              if (!response.ok || !result) {
+                throw new Error(result.error);
+              }
+              localStorage.setItem("authorization", result.token);
+              localStorage.setItem("role", result.user.role);
+              localStorage.setItem("username", result.user.username);
+              localStorage.setItem("email", result.user.email);
+
+              client.setQueryData<SessionServiceState>(getSessionQueryKey(), {
+                status: "auth",
+                authorization: result.token,
+                role: result.user.role,
+                username: result.user.username,
+                email: result.user.email,
+              });
+              return Promise.resolve();
+            },
+            oauthGithub: async (value) => {
+              const response = await fetch(
+                `https://pkilab6.azurewebsites.net/auth/oauth/github${value}`,
                 {
                   method: "GET",
                 }

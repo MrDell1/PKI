@@ -5,4 +5,5 @@ export const paths = {
   signUp: "/signUp",
   resources: "/resources",
   googleAuth: "/oauthgoogle",
+  githubAuth: "/oauthgithub",
 };
