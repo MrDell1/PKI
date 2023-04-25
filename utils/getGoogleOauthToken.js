@@ -1,8 +1,8 @@
-var OAuth2Data = require("../google_key.json");
+require("dotenv").config();
 
-const CLIENT_ID = OAuth2Data.web.client_id;
-const CLIENT_SECRET = OAuth2Data.web.client_secret;
-const REDIRECT_URL = OAuth2Data.web.redirect_uris;
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
 
 const getGoogleOauthToken = async (code) => {
   const rootURl = "https://oauth2.googleapis.com/token";
