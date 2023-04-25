@@ -14,7 +14,7 @@ const githubOauthHandler = async (req, res, next) => {
     }
 
     // Use the code to get the id and access tokens
-    const { scope, access_token } = await getGithubOauthToke(code);
+    const { access_token } = await getGithubOauthToke(code);
 
     //const has_user_email_scope = scope === "user:email";
     // Use the token to get the User
@@ -22,7 +22,7 @@ const githubOauthHandler = async (req, res, next) => {
 
     // Update user if user already exist or create new user
     connection.query(
-      ` SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
+      `SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
         email
       )}`,
       (err, result) => {
@@ -42,29 +42,26 @@ const githubOauthHandler = async (req, res, next) => {
                   error: err,
                 });
               }
-
-              connection.query(
-                ` SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
-                  email
-                )}`,
-                (err, resultSignUp) => {
-                  if (err) {
-                    return res.status(400).send({ error: err });
-                  }
-                  const token = jwt.sign(
-                    { id: resultSignUp[0].idusers },
-                    "rsa",
-                    {
-                      expiresIn: "1h",
-                    }
-                  );
-                  return res.status(200).send({
-                    msg: "Logged in!",
-                    token,
-                    user: resultSignUp[0],
-                  });
-                }
-              );
+            }
+          );
+          console.log("Insert success");
+          connection.query(
+            `SELECT idusers, username, email, provider, roles.role FROM users LEFT JOIN roles ON roles.idrole = users.role WHERE users.email=${connection.escape(
+              email
+            )}`,
+            (errSignUp, resultSignUp) => {
+              if (errSignUp) {
+                return res.status(400).send({ error: errSignUp });
+              }
+              console.log("resultSignUp", resultSignUp);
+              const token = jwt.sign({ id: resultSignUp[0].idusers }, "rsa", {
+                expiresIn: "1h",
+              });
+              return res.status(200).send({
+                msg: "Logged in!",
+                token,
+                user: resultSignUp[0],
+              });
             }
           );
         }
