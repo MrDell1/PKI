@@ -8,19 +8,23 @@ const getGithubOauthToke = async (code) => {
     code,
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
-    accept: "json",
   };
 
-  const response = await fetch(rootURl, {
+  const queryString = Object.entries(options)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+
+  const response = await fetch(`${rootURl}?${queryString}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams(options),
   });
-  const result = await response.json();
+  const result = await response.text();
+  const decoded = Object.fromEntries(new URLSearchParams(data).entries());
+  console.log(decoded);
   if (response.status === 200) {
-    return result;
+    return decoded;
   } else {
     console.log("Failed to fetch Google Oauth Tokens");
     throw new Error(result.error);
