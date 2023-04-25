@@ -6,9 +6,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const googleOauthHandler =
   require("../controller/googleOauthHandler.js").googleOauthHandler;
+const githubOauthHandler =
+  require("../controller/githubOauthHandler.js").githubOauthHandler;
 let connection = require("../database").databaseConnection;
 
 router.get("/oauth/google", googleOauthHandler);
+router.get("/oauth/github", githubOauthHandler);
 
 router.post("/signin", function (req, res, next) {
   check(req.body.email, "Wrong email").isEmail();
