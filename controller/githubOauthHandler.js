@@ -1,6 +1,6 @@
-const getGoogleOauthToken =
-  require("../utils/getGoogleOauthToken.js").getGoogleOauthToken;
-const getGoogleUser = require("../utils/getGoogleUser.js").getGoogleUser;
+const getGithubOauthToke =
+  require("../utils/getGithubOauthToke.js").getGithubOauthToke;
+const getGithubUser = require("../utils/getGithubUser.js").getGithubUser;
 const jwt = require("jsonwebtoken");
 let connection = require("../database").databaseConnection;
 
@@ -14,11 +14,11 @@ const githubOauthHandler = async (req, res, next) => {
     }
 
     // Use the code to get the id and access tokens
-    const { scope, access_token } = await getGoogleOauthToken(code);
+    const { scope, access_token } = await getGithubOauthToke(code);
     const scopes = JSON.parse(result)["scope"].split(",");
     const has_user_email_scope = scopes === "user:email";
     // Use the token to get the User
-    const { name, verified_email, email } = await getGoogleUser(
+    const { name, verified_email, email } = await getGithubUser(
       has_user_email_scope,
       access_token
     );
