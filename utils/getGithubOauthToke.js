@@ -21,7 +21,7 @@ const getGithubOauthToke = async (code) => {
     },
   });
   const result = await response.text();
-  const decoded = Object.fromEntries(new URLSearchParams(data).entries());
+  const decoded = Object.fromEntries(new URLSearchParams(result).entries());
   console.log(decoded);
   if (response.status === 200) {
     return decoded;
