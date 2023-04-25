@@ -5,13 +5,10 @@ import { paths } from "@utils/paths";
 import { ReactElement } from "react";
 import { Navigate } from "react-router";
 
-const Google = (): ReactElement => {
+export const Google = (): ReactElement => {
   const anonService = useAnonService();
   const { mutate } = useMutation(anonService.oauthGoogle);
-  // const status = useSessionStatus();
-  // if (status === "auth") {
-  //   return <Navigate replace to={paths.resources} />;
-  // }
+
   mutate(window.location.search, {
     onError: () => {
       return <Navigate replace to={paths.signIn} />;
@@ -23,4 +20,3 @@ const Google = (): ReactElement => {
 
   return <Spinner size="xl" />;
 };
-export default Google;
