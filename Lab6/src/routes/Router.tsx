@@ -1,7 +1,6 @@
 import { paths } from "@utils/paths";
 import { lazy, ReactElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Google } from "./Oauth/Google/Google";
 import { Resource } from "./Resource/Resource";
 
 const ContentWrapper = lazy(() => import("./ContentWrapper/ContentWrapper"));
@@ -10,7 +9,7 @@ const SignUpPage = lazy(() => import("./SignUpPage/SignUpPage"));
 const LandingPage = lazy(() => import("./LandingPage/LandingPage"));
 const Public = lazy(() => import("./Public/Public"));
 const Protected = lazy(() => import("./Protected/Protected"));
-const Oauth = lazy(() => import("./Oauth/Oauth"));
+const Google = lazy(() => import("./Google/Google"));
 
 export const Router = (): ReactElement => {
   return (
@@ -52,12 +51,11 @@ export const Router = (): ReactElement => {
         <Route
           element={
             <Suspense fallback={null}>
-              <Oauth />
+              <Google />
             </Suspense>
           }
-        >
-          <Route element={<Google />} path={paths.googleAuth} />
-        </Route>
+          path={paths.googleAuth}
+        />
 
         <Route
           element={

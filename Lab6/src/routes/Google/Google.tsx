@@ -1,20 +1,15 @@
-import { Box } from "@chakra-ui/react";
 import { useSessionStatus } from "@services/SessionService";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router";
+import { GoogleAuth } from "./GoogleAuth/GoogleAuth";
 
-const Oauth = (): ReactElement => {
+const Google = (): ReactElement => {
   const status = useSessionStatus();
 
   if (status === "auth") {
     return <Navigate replace to={paths.resources} />;
   }
-  return (
-    <Box>
-      <Outlet />
-    </Box>
-  );
+  return <GoogleAuth />;
 };
-
-export default Oauth;
+export default Google;

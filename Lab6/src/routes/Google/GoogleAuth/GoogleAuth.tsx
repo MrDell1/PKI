@@ -5,16 +5,13 @@ import { paths } from "@utils/paths";
 import { ReactElement } from "react";
 import { Navigate } from "react-router";
 
-export const Google = (): ReactElement => {
+export const GoogleAuth = (): ReactElement => {
   const anonService = useAnonService();
   const { mutate } = useMutation(anonService.oauthGoogle);
 
   mutate(window.location.search, {
     onError: () => {
       return <Navigate replace to={paths.signIn} />;
-    },
-    onSuccess: () => {
-      return <Navigate replace to={paths.resources} />;
     },
   });
 
