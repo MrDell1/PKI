@@ -62,16 +62,18 @@ const LandingPage = (): ReactElement => {
           </Text>
           <Divider orientation="horizontal" />
         </Flex>
-        <Link to={getGoogleUrl(from)}>
-          <Button bg="red.600" size="md">
-            Google
-          </Button>
-        </Link>
-        <Link to={getGithubUrl()}>
-          <Button bg="red.600" size="md">
-            GitHub
-          </Button>
-        </Link>
+        <Flex gap="4" justifyContent="center" w="full">
+          <Link to={getGoogleUrl(from)}>
+            <Button bg="red.600" size="md">
+              Google
+            </Button>
+          </Link>
+          <Link to={getGithubUrl()}>
+            <Button bg="gray.700" size="md">
+              GitHub
+            </Button>
+          </Link>
+        </Flex>
       </Flex>
     </Flex>
   );
