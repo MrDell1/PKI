@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 export const GitHubAuth = (): ReactElement => {
   const anonService = useAnonService();
-  const { mutate } = useMutation(anonService.oauthGoogle);
+  const { mutate } = useMutation(anonService.oauthGithub);
   const navigate = useNavigate();
 
   const auth = () => {
