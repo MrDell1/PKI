@@ -32,9 +32,9 @@ const githubOauthHandler = async (req, res, next) => {
 
         if (!result.length) {
           connection.query(
-            `INSERT INTO users (username, email, provider) VALUES (${connection.escape(
+            `INSERT INTO users (username, email, provider, joined) VALUES (${connection.escape(
               login
-            )}, ${connection.escape(email)}, 'github')`,
+            )}, ${connection.escape(email)}, 'github', current_timestamp)`,
             (err) => {
               if (err) {
                 console.log(err);
@@ -57,6 +57,10 @@ const githubOauthHandler = async (req, res, next) => {
               const token = jwt.sign({ id: resultSignUp[0].idusers }, "rsa", {
                 expiresIn: "1h",
               });
+              connection.query(`UPDATE users SET lastvisit = current_timestamp, counter=counter+1 WHERE (idusers = '${resultSignUp[0].idusers}')`, (err) => {
+                if (err) {
+                 throw new Error(err);
+                }});
               return res.status(200).send({
                 msg: "Logged in!",
                 token,
@@ -71,6 +75,10 @@ const githubOauthHandler = async (req, res, next) => {
           const token = jwt.sign({ id: result[0].idusers }, "rsa", {
             expiresIn: "1h",
           });
+          connection.query(`UPDATE users SET lastvisit = current_timestamp, counter=counter+1 WHERE (idusers = '${result[0].idusers}')`, (err) => {
+            if (err) {
+             throw new Error(err);
+            }});
           return res.status(200).send({
             msg: "Logged in!",
             token,

@@ -45,6 +45,10 @@ router.post("/signin", function (req, res, next) {
             const token = jwt.sign({ id: result[0].idusers }, "rsa", {
               expiresIn: "1h",
             });
+            connection.query(`UPDATE users SET lastvisit = current_timestamp, counter=counter+1 WHERE (idusers = '${result[0].idusers}')`, (err) => {
+              if (err) {
+                return res.status(400).send({ error: err });
+              }});
             return res.status(200).send({
               msg: "Logged in!",
               token,
@@ -82,9 +86,9 @@ router.post("/signup", function (req, res, next) {
 
       bcrypt.hash(req.body.password, 10, (err, hash) => {
         connection.query(
-          `INSERT INTO users (username, email, password, provider) VALUES (${connection.escape(
+          `INSERT INTO users (username, email, password, provider, joined) VALUES (${connection.escape(
             req.body.username
-          )}, ${connection.escape(req.body.email)}, '${hash}', 'local')`,
+          )}, ${connection.escape(req.body.email)}, '${hash}', 'local', current_timestamp)`,
           (err, result) => {
             if (err) {
               console.log(err);
@@ -92,6 +96,7 @@ router.post("/signup", function (req, res, next) {
                 error: err,
               });
             }
+            
 
             return res.status(201).send({
               msg: "The user has been registerd with us!",
