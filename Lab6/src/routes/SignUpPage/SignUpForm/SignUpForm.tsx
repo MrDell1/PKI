@@ -29,7 +29,7 @@ export const SignUpForm = (): ReactElement => {
         },
         onSuccess: () => {
           toast({
-            title: "Succes",
+            title: "Signed up",
             description: "Your account has been register, login to get access",
             status: "success",
           });

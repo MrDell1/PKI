@@ -1,11 +1,18 @@
-import { Box, Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner , Table, Tbody, Td, Text, Th, Thead, Tr} from "@chakra-ui/react";
 import { useAuthService } from "@services/SessionService";
 import { useQuery } from "@tanstack/react-query";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
-import { Activate } from "./Activate/Activate";
-import { Deactivate } from "./Deactivate/Deactivate";
+import { AdminTable } from "./AdminTable/AdminTable";
+
+export type UserData = {
+  username: string,
+  email: string,
+  role: string,
+  isActive: number,
+  idusers: string,
+}
 
 export const Admin = (): ReactElement => {
   const authService = useAuthService();
@@ -23,53 +30,16 @@ export const Admin = (): ReactElement => {
     authService.signOut();
     return <Navigate to={paths.signIn} />;
   }
-  if (query.status === "success") {
+  if(query.status === "error"){
+    return <Flex justifyContent="center" alignItems="center">Error please try again later</Flex>
+  }
+  if (query.status === "success" && query.data.users) {
     console.log(query.data.users);
     return (
-      <Box m="auto">
+      <Flex flexDir="column" alignItems="center" my="4">
         <Heading>{query?.data.user[0].data}</Heading>
-        <Flex flexDir="column" px="64">
-          <Flex
-            alignItems="center"
-            fontSize="2xl"
-            fontWeight="semibold"
-            gap="8"
-            justifyContent="space-between"
-            p="4"
-            textAlign="center"
-            w="full"
-          >
-            <Text>Username</Text>
-            <Text minW="44">Email</Text>
-            <Text>Role</Text>
-            <Text>Activate/Deactivate</Text>
-          </Flex>
-          {query?.data.users.map((value: {username:string, idusers: string, email: string, role: string, isActive: number}, key: number) => {
-            return (
-              <Flex
-                alignItems="center"
-                fontSize="2xl"
-                justifyContent="space-between"
-                key={key}
-                py="3"
-                textAlign="center"
-                w="full"
-              >
-                <Text minW="24">{value.username}</Text>
-                <Text>{value.email}</Text>
-                <Text>{value.role}</Text>
-                <Button size="sm">
-                  {value.isActive === 1 ? (
-                    <Deactivate id={value.idusers} />
-                  ) : (
-                    <Activate id={value.idusers} />
-                  )}
-                </Button>
-              </Flex>
-            );
-          })}
-        </Flex>
-      </Box>
+       <AdminTable data={query.data.users} />
+      </Flex>
     );
   }
   return <Spinner size="xl" />;

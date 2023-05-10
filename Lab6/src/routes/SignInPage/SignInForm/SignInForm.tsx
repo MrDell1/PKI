@@ -22,6 +22,13 @@ export const SignInForm = (): ReactElement => {
             status: "error",
           });
         },
+        onSuccess: () => {
+          toast({
+            title: "Loged in",
+            description: "Successful loged in",
+            status: "success",
+          })
+        }
       });
     },
   });

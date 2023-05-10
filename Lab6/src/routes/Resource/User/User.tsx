@@ -1,4 +1,4 @@
-import { Box, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { useAuthService } from "@services/SessionService";
 import { useQuery } from "@tanstack/react-query";
 import { paths } from "@utils/paths";
@@ -19,6 +19,9 @@ export const User = (): ReactElement => {
   ) {
     authService.signOut();
     return <Navigate to={paths.signIn} />;
+  }
+  if(query.status === "error"){
+    return <Flex justifyContent="center" alignItems="center">Error please try again later</Flex>
   }
   if (query.status === "success") {
     return (

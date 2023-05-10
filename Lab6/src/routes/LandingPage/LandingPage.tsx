@@ -5,10 +5,12 @@ import { paths } from "@utils/paths";
 import { ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 import lp from "./assets/lp.jpg";
+import { useSessionStatus } from "@services/SessionService";
 
 const LandingPage = (): ReactElement => {
   const location = useLocation();
   const from = ((location.state as any)?.from?.pathname as string) || "/";
+  const status = useSessionStatus();
   return (
     <Flex
       bgImage={lp}
@@ -47,7 +49,8 @@ const LandingPage = (): ReactElement => {
             </Text>
           </Link>
         </Box>
-        <Flex justifyContent="space-between" w="full">
+        {status === "anon" ? 
+       ( <><Flex justifyContent="space-between" w="full">
           <Link to={paths.signIn}>
             <Button>Sign in</Button>
           </Link>
@@ -55,6 +58,7 @@ const LandingPage = (): ReactElement => {
             <Button>Sign up</Button>
           </Link>
         </Flex>
+        
         <Flex alignItems="center" w="full">
           <Divider orientation="horizontal" />
           <Text color="white" fontSize="sm" px="3">
@@ -73,7 +77,12 @@ const LandingPage = (): ReactElement => {
               GitHub
             </Button>
           </Link>
-        </Flex>
+        </Flex></>)
+        :
+        <Link to={paths.resources}>
+            <Button>Resources</Button>
+          </Link>
+        }
       </Flex>
     </Flex>
   );

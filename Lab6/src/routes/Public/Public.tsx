@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { paths } from "@utils/paths";
 import { ReactElement } from "react";
@@ -20,17 +20,19 @@ const Public = (): ReactElement => {
     uplodData().then((respone) => respone.json())
   );
   const navigate = useNavigate();
-  if (query.status === "error") {
-    return <Navigate to={paths.root} />;
+  if(query.status === "error"){
+    return <Flex justifyContent="center" alignItems="center">Error please try again later</Flex>
   }
   if (query.status === "success") {
     return (
-      <Box>
-        <Button onClick={() => navigate(paths.root)} size="md">
+      <Flex flexDir="column">
+        <Box w="full" px="16" py="4" backgroundColor="light.100" borderBottomRadius="xl" boxShadow="md">
+        <Button onClick={() => navigate(paths.root)} size="sm" variant="tertiary">
           Home
         </Button>
+        </Box>
         <Heading>{query?.data.user[0].data}</Heading>
-      </Box>
+      </Flex>
     );
   }
   return <Spinner size="xl" />;

@@ -9,11 +9,11 @@ import { Flex, Text } from "@chakra-ui/react";
 export const Resource = (): ReactElement => {
   const authService = useAuthService();
   return (
-    <Flex flexDir="column">
-      <Text>{authService.email}</Text>
-      <Text>{authService.username}</Text>
-      <Text>{authService.role}</Text>
-      <Text>{authService.authorization}</Text>
+    <Flex flexDir="column" alignContent="flex-start" alignItems="center" mt="8" >
+      <Text>Email: {authService.email}</Text>
+      <Text>Username: {authService.username}</Text>
+      <Text>Role: {authService.role}</Text>
+      <Text>JWT: {authService.authorization}</Text>
       {authService.role === "user" ? <User /> : authService.role === "admin" ? <Admin /> : <Navigate to={paths.public} />}
     </Flex>
   )

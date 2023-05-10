@@ -60,7 +60,7 @@ export const Button: ComponentStyleConfig = {
     sm: {
       px: "4",
       py: "2",
-      fontSize: "2xl",
+      fontSize: "xl",
     },
   },
   variants: {
@@ -99,6 +99,17 @@ export const Button: ComponentStyleConfig = {
         bg: "green.400",
       },
     },
+    tertiary: {
+      w: "fit-content",
+      h: "fit-content",
+      bg: "transparent",
+      _active: {
+        bg: "green.300",
+      },
+      _hover: {
+        bg: "green.400",
+      },
+    }
   },
   defaultProps: {
     size: "lg",
