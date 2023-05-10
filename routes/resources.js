@@ -72,7 +72,7 @@ router.get("/admin", function (req, res) {
             return res.status(400).send({ error: err });
           }
           connection.query(
-            "SELECT idusers, username, email, roles.role, isActive FROM users LEFT JOIN roles ON roles.idrole = users.role",
+            "SELECT idusers, username, email, roles.role, isActive, provider, lastvisit, counter, joined FROM users LEFT JOIN roles ON roles.idrole = users.role",
             (err, listUsers) => {
               if (err) {
                 return res.status(400).send({ error: err });
